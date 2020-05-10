@@ -62,19 +62,36 @@ public class MainPageTest {
     }
 
     @Test
+    public void addBookToBasketAndCheck() {
+        String bookTitle = "Coders at Work";
+        String expectedResult = String.format("%s был добавлен в вашу корзину.", bookTitle);
+        mainPage.openBooksCatalog();
+        mainPage.addBookToBasketByTitle(bookTitle);
+        String actualResult = mainPage.checkSuccessAddedIntoBasket();
+        System.out.println(actualResult);
+        Assert.assertEquals(actualResult, expectedResult);
+    }
+
+    @Test
     public void checkThatAllBooksHavePrice() {
         mainPage.openBooksCatalog();
         Assert.assertEquals(mainPage.getBooksPriceAsString().size(), 20);
     }
+
     @Test
     public void checkPaginationButton() throws InterruptedException {
         mainPage.openBooksCatalog();
-        JavascriptExecutor jse = (JavascriptExecutor)driver;
+        JavascriptExecutor jse = (JavascriptExecutor) driver;
         jse.executeScript("window.scrollTo(0, document.body.scrollHeight)");
         Assert.assertFalse(mainPage.checkPaginationBack());
         Assert.assertTrue(mainPage.checkPaginationForward());
         mainPage.clickPagination("forward");
         Assert.assertTrue(mainPage.checkPaginationBack());
+    }
+    @Test
+    public void checkSearchResult(){
+        mainPage.sendInSearchField("Hackers");
+        Assert.assertEquals(mainPage.getBooksList().size(),12);
     }
 
 

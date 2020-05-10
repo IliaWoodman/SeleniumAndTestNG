@@ -1,4 +1,5 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -32,7 +33,11 @@ public class MainPage {
     private By booksListOnPage = By.xpath("//li[@class = 'col-xs-6 col-sm-4 col-md-3 col-lg-3']");
     private By header = By.xpath("//h1");
     private By bookTitle = By.xpath("//li[@class = 'col-xs-6 col-sm-4 col-md-3 col-lg-3']/article/h3/a");
+   // private String bookTitleAsString = ("//li[@class = 'col-xs-6 col-sm-4 col-md-3 col-lg-3']/article/h3/a[@title = \"%s\"]");
+    private String buttonAddToBasketByTitle = "//li[@class = 'col-xs-6 col-sm-4 col-md-3 col-lg-3']/article/h3/a[@title = \"%s\"]/ancestor::li//div[2]/form/button";
     public By priceBooksList = By.xpath("//li[@class = 'col-xs-6 col-sm-4 col-md-3 col-lg-3']/article/div[2]/p[1]");
+    private By successBookTitle = By.xpath("(//div[@class = 'alertinner ']/strong)[1]");
+    private By successNotification = By.xpath("(//div[@class = 'alertinner '])[1]");
     //Pagination
     public By paginationForward = By.xpath("//a[text() = 'вперед']");
     public By paginationBack = By.xpath("//a[text() = 'назад']");
@@ -104,6 +109,19 @@ public class MainPage {
         }
         return priceList;
     }
+
+    public void addBookToBasketByTitle(String title){
+        driver.findElement(By.xpath(String.format(buttonAddToBasketByTitle,title))).click();
+    }
+    public String checkSuccessAddedIntoBasket(){
+        String success = driver.findElement(successNotification).getText().replaceAll("\\s{2,}", "");
+        return success;
+    }
+    /////////////////////////////////////////Search/////////////////////////////////////////////////////////////////////////
+    public void sendInSearchField(String title){
+        driver.findElement(searchField).sendKeys(title);
+        driver.findElement(searchField).sendKeys(Keys.ENTER);
+    }
     /////////////////////////////////////////Pagination/////////////////////////////////////////////////////////////////////////
 
     public boolean checkPaginationBack(){
@@ -136,6 +154,10 @@ public class MainPage {
     }
     public String getBasketText(){
         return driver.findElement(basketText).getText();
+    }
+    public BasketPage transferToBasket(){
+        driver.findElement(linkToBasket).click();
+        return new BasketPage(driver);
     }
 
 }
