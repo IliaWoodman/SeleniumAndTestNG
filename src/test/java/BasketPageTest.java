@@ -1,6 +1,8 @@
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -12,7 +14,7 @@ public class BasketPageTest {
     MainPage mainPage;
     BasketPage basketPage;
 
-    @BeforeMethod
+    @BeforeMethod(groups = {"addBooksToBasket","basketSmoke"})
     public void setUp() {
         System.setProperty("webdriver.chrome.driver", "C:\\driverForSelenium\\chromedriver.exe");
         driver = new ChromeDriver();
@@ -21,13 +23,14 @@ public class BasketPageTest {
         mainPage = new MainPage(driver);
     }
 
-    @Test
+
+    @Test(groups = {"basketSmoke"},timeOut = 5000)
     public void goToBasket(){
         mainPage.transferToBasket();
         Assert.assertEquals(driver.getCurrentUrl(),"http://selenium1py.pythonanywhere.com/ru/basket/");
     }
 
-    @Test
+    @Test(groups = {"addBooksToBasket","smoke"})
     public void checkBasketItems(){
         mainPage.openBooksCatalog();
         mainPage.addBookToBasketByTitle("The shellcoder's handbook");
@@ -36,7 +39,7 @@ public class BasketPageTest {
         Assert.assertEquals(basketPage.getBasketItems().size(), 2);
     }
 
-    @Test
+    @Test(groups = {"addBooksToBasket"})
     public void checkAmountBooks(){
         mainPage.openBooksCatalog();
         mainPage.addBookToBasketByTitle("The shellcoder's handbook");
@@ -45,12 +48,16 @@ public class BasketPageTest {
         System.out.println(basketPage.getBooksPrice());
         Assert.assertEquals(basketPage.getBooksPrice(), basketPage.getFinalPrice());
     }
-    @Test
+    @Test(groups = {"addBooksToBasket","basketSmoke"})
     public void submitOrderCheck(){
         mainPage.openBooksCatalog();
         mainPage.addBookToBasketByTitle("The shellcoder's handbook");
         basketPage = mainPage.transferToBasket();
-        Assert.assertEquals(driver.getCurrentUrl(),"http://selenium1py.pythonanywhere.com/ru/checkout/");
+        Assert.assertEquals(driver.getCurrentUrl(),"http://selenium1py.pythonanywhere.com/ru/basket/");
+    }
+    @AfterMethod(groups = {"addBooksToBasket","basketSmoke"})
+    public void tearDown(){
+        driver.quit();
     }
 
 }

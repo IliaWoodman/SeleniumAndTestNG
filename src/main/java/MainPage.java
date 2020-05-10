@@ -19,7 +19,7 @@ public class MainPage {
     private String language = ("//option[@value = '%s']");
 
 
-    private By loginLink = By.xpath("//a[@id = 'login_link']");
+    private By registrationLink = By.xpath("//a[@id = 'login_link']");
     private By linkToMainPage = By.xpath("//a[text()='Oscar']");
     private By linkToBasket = By.xpath("(//a[text()='Посмотреть корзину'])[1]");
     private By allGoodsLink = By.xpath("(//a[text()='Все товары'])[1]");
@@ -148,7 +148,7 @@ public class MainPage {
 
 
 
-    /////////////////////////////////////////Basket/////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////BasketPage/////////////////////////////////////////////////////////////////////////
     public void goToBasket(){
         driver.findElement(linkToBasket).click();
     }
@@ -159,5 +159,11 @@ public class MainPage {
         driver.findElement(linkToBasket).click();
         return new BasketPage(driver);
     }
+    /////////////////////////////////////////RegistrationPage/////////////////////////////////////////////////////////////////////////
+     public RegistrationPage transferToRegistration(){
+        driver.findElement(registrationLink).click();
+        return new RegistrationPage(driver);
+     }
+
 
 }

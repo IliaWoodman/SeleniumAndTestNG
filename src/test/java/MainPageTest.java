@@ -95,14 +95,8 @@ public class MainPageTest {
     }
 
 
-/*    @Test
-    public void openBasket(){
-        mainPage.goToBasket();
-        System.out.println("basketOpen");
-    }
-
     @AfterMethod
     public void tearDown(){
         driver.quit();
-    }*/
+    }
 }
